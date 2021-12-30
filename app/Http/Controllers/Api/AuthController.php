@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\UserRegistered;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
@@ -24,6 +25,8 @@ class AuthController extends Controller
 
         //create access token
         $accessToken =  $user->createToken('authToken')->accessToken;
+
+        event(new UserRegistered($user));
 
         return response()->json([
            'user'=> $user,
